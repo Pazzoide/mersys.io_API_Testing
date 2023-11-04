@@ -1,0 +1,2869 @@
+{
+	"info": {
+		"_postman_id": "ff89fd69-ca20-406f-8987-6c96541fe67f",
+		"name": "** CAMPUS **",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30584148"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Login successful\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"{{Username}}\",\r\n  \"password\": \"{{Password}}\",\r\n  \"rememberMe\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/auth/login",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "InvalidUsername_Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Login unsuccessful\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"InvalidUsername\",\r\n  \"password\": \"{{Password}}\",\r\n  \"rememberMe\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/auth/login",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "InvalidPassword_Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Login unsuccessful\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"{{Username}}\",\r\n  \"password\": \"InvalidPassword\",\r\n  \"rememberMe\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/auth/login",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Setup",
+			"item": [
+				{
+					"name": "Parameters",
+					"item": [
+						{
+							"name": "Document Type",
+							"item": [
+								{
+									"name": "Create Document",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var donenData = pm.response.json();\r",
+													"var docID = donenData.id;\r",
+													"var DocNanme = donenData.name;\r",
+													"var schoolId = donenData.schoolId;\r",
+													"\r",
+													"pm.collectionVariables.set(\"SchoolID\", schoolId);\r",
+													"pm.collectionVariables.set(\"DocID\", docID);\r",
+													"pm.collectionVariables.set(\"DocNAME\", DocNanme);\r",
+													"\r",
+													"pm.test(\"Status code is 201\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"id\": null,\r\n  \"name\": \"{{$randomFirstName}}\",\r\n  \"description\": \"{{$randomLastName}}\",\r\n  \"attachmentStages\": [\r\n    \"STUDENT_REGISTRATION\"\r\n  ],\r\n  \"active\": true,\r\n  \"required\": true,\r\n  \"useCamera\": false,\r\n  \"schoolId\": \"646cbb07acf2ee0d37c6d984\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://test.mersys.io/school-service/api/attachments/create",
+											"protocol": "https",
+											"host": [
+												"test",
+												"mersys",
+												"io"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"attachments",
+												"create"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Search Doc By Name",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\": \"{{DocNAME}}\",\r\n  \"schoolId\": \"{{SchoolID}}\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://test.mersys.io/school-service/api/attachments/search",
+											"protocol": "https",
+											"host": [
+												"test",
+												"mersys",
+												"io"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"attachments",
+												"search"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update Doc Type",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"id\": \"{{DocID}}\",\r\n  \"name\": \"UPDATE DONE\",\r\n  \"description\": \"UPDATE DONE\",\r\n  \"attachmentStages\": [\r\n    \"STUDENT_REGISTRATION\"\r\n  ],\r\n  \"active\": true,\r\n  \"required\": true,\r\n  \"useCamera\": false,\r\n  \"schoolId\": \"{{SchoolID}}\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://test.mersys.io/school-service/api/attachments",
+											"protocol": "https",
+											"host": [
+												"test",
+												"mersys",
+												"io"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"attachments"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete Doc Type",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "https://test.mersys.io/school-service/api/attachments/{{DocID}}",
+											"protocol": "https",
+											"host": [
+												"test",
+												"mersys",
+												"io"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"attachments",
+												"{{DocID}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete Doc Type Negative",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "https://test.mersys.io/school-service/api/attachments/{{DocID}}",
+											"protocol": "https",
+											"host": [
+												"test",
+												"mersys",
+												"io"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"attachments",
+												"{{DocID}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Fields",
+							"item": [
+								{
+									"name": "Create Field",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var responseData = pm.response.json();\r",
+													"\r",
+													"pm.collectionVariables.set(\"FieldID\", responseData.id);\r",
+													"pm.collectionVariables.set(\"FieldName\",responseData.name)\r",
+													"\r",
+													"pm.test(\"Status code is 201\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\": \"{{$randomFileName}}\",\r\n  \"translateName\": [],\r\n  \"code\": \"{{$randomPhoneNumber}}\",\r\n  \"type\": \"STRING\",\r\n  \"children\": [],\r\n  \"systemField\": false,\r\n  \"systemFieldName\": null,\r\n  \"schoolId\": \"646cbb07acf2ee0d37c6d984\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://test.mersys.io/school-service/api/entity-field",
+											"protocol": "https",
+											"host": [
+												"test",
+												"mersys",
+												"io"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"entity-field"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Search Field By Name",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"schoolId\": \"{{SchoolID}}\",\r\n  \"name\": \"{{FieldName}}\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://test.mersys.io/school-service/api/entity-field/search",
+											"protocol": "https",
+											"host": [
+												"test",
+												"mersys",
+												"io"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"entity-field",
+												"search"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update Field",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"id\": \"{{FieldID}}\",\r\n  \"name\": \"UPDATE DONE\",\r\n  \"translateName\": [],\r\n  \"code\": \"UPDATE DONE\",\r\n  \"type\": \"STRING\",\r\n  \"children\": [],\r\n  \"systemField\": false,\r\n  \"systemFieldName\": null,\r\n  \"schoolId\": \"{{SchoolID}}\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://test.mersys.io/school-service/api/entity-field",
+											"protocol": "https",
+											"host": [
+												"test",
+												"mersys",
+												"io"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"entity-field"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete Field",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 204\", function () {\r",
+													"    pm.response.to.have.status(204);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "https://test.mersys.io/school-service/api/entity-field/{{FieldID}}",
+											"protocol": "https",
+											"host": [
+												"test",
+												"mersys",
+												"io"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"entity-field",
+												"{{FieldID}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete Field Negative",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "https://test.mersys.io/school-service/api/entity-field/{{FieldID}}",
+											"protocol": "https",
+											"host": [
+												"test",
+												"mersys",
+												"io"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"entity-field",
+												"{{FieldID}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Discounts",
+							"item": [
+								{
+									"name": "Create Discount",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var responseData = pm.response.json();\r",
+													"\r",
+													"pm.collectionVariables.set(\"DiscountID\", responseData.id);\r",
+													"pm.collectionVariables.set(\"DiscountDescription\",responseData.description)\r",
+													"\r",
+													"pm.test(\"Status code is 201\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"description\": \"{{$randomFileName}}\",\r\n  \"code\": \"{{$randomPhoneNumber}}\",\r\n  \"priority\": 120\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://test.mersys.io/school-service/api/discounts",
+											"protocol": "https",
+											"host": [
+												"test",
+												"mersys",
+												"io"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"discounts"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Search Discount By Description",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"description\": \"{{DiscountDescription}}\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://test.mersys.io/school-service/api/discounts/search",
+											"protocol": "https",
+											"host": [
+												"test",
+												"mersys",
+												"io"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"discounts",
+												"search"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update Discount",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"id\": \"{{DiscountID}}\",\r\n  \"description\": \"UPDATE DONE\",\r\n  \"code\": \"UPDATE DONE\",\r\n  \"priority\": 10\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://test.mersys.io/school-service/api/discounts",
+											"protocol": "https",
+											"host": [
+												"test",
+												"mersys",
+												"io"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"discounts"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete Discount",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 204\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "https://test.mersys.io/school-service/api/discounts/{{DiscountID}}",
+											"protocol": "https",
+											"host": [
+												"test",
+												"mersys",
+												"io"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"discounts",
+												"{{DiscountID}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete Discount Negative",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "https://test.mersys.io/school-service/api/entity-field/{{FieldID}}",
+											"protocol": "https",
+											"host": [
+												"test",
+												"mersys",
+												"io"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"entity-field",
+												"{{FieldID}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Nationalities",
+							"item": [
+								{
+									"name": "Create Nationality",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var responseData = pm.response.json();\r",
+													"\r",
+													"pm.collectionVariables.set(\"NationalityID\", responseData.id);\r",
+													"pm.collectionVariables.set(\"NationalityNAME\",responseData.name)\r",
+													"\r",
+													"pm.test(\"Status code is 201\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\": \"{{$randomJobTitle}}\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://test.mersys.io/school-service/api/nationality",
+											"protocol": "https",
+											"host": [
+												"test",
+												"mersys",
+												"io"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"nationality"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Search Nationality By Name",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\": \"{{NationalityNAME}}\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://test.mersys.io/school-service/api/nationality/search",
+											"protocol": "https",
+											"host": [
+												"test",
+												"mersys",
+												"io"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"nationality",
+												"search"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update Nationality",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"id\": \"{{NationalityID}}\",\r\n  \"name\": \"UPDATE DONE\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://test.mersys.io/school-service/api/nationality",
+											"protocol": "https",
+											"host": [
+												"test",
+												"mersys",
+												"io"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"nationality"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete Nationality",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 204\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "https://test.mersys.io/school-service/api/nationality/{{NationalityID}}",
+											"protocol": "https",
+											"host": [
+												"test",
+												"mersys",
+												"io"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"nationality",
+												"{{NationalityID}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete Nationality Negative",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "https://test.mersys.io/school-service/api/nationality/{{NationalityID}}",
+											"protocol": "https",
+											"host": [
+												"test",
+												"mersys",
+												"io"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"nationality",
+												"{{NationalityID}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Bank Accounts",
+							"item": [
+								{
+									"name": "Bank Account Adding",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var responseData = pm.response.json();\r",
+													"pm.collectionVariables.set(\"AccountName\",responseData.name);\r",
+													"pm.collectionVariables.set(\"AccountIban\",responseData.iban);\r",
+													"pm.collectionVariables.set(\"AccountCode\",responseData.integrationCode);\r",
+													"pm.collectionVariables.set(\"AccountId\",responseData.id);\r",
+													"\r",
+													"pm.test(\"Addition successful\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\": \"{{$randomFirstName}}\",\r\n  \"iban\": \"{{$randomBankAccountIban}}\",\r\n  \"integrationCode\": \"{{$randomCurrencyCode}}\",\r\n  \"currency\": \"TRY\",\r\n  \"active\": true,\r\n  \"schoolId\": \"646cbb07acf2ee0d37c6d984\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{URL}}/school-service/api/bank-accounts",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"bank-accounts"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Bank Account Adding Negative",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Addition unsuccessful\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\": \"{{AccountName}}\",\r\n  \"iban\": \"{{AccountIban}}\",\r\n  \"integrationCode\": \"{{AccountCode}}\",\r\n  \"currency\": \"TRY\",\r\n  \"active\": true,\r\n  \"schoolId\": \"646cbb07acf2ee0d37c6d984\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{URL}}/school-service/api/bank-accounts",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"bank-accounts"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Bank Account Update",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Update successful\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"id\": \"{{AccountId}}\",\r\n  \"name\": \"{{Update Name}}\",\r\n  \"iban\": \"{{Update Iban}}\",\r\n  \"integrationCode\": \"{{Update Code}}\",\r\n  \"currency\": \"TRY\",\r\n  \"active\": true,\r\n  \"schoolId\": \"646cbb07acf2ee0d37c6d984\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{URL}}/school-service/api/bank-accounts",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"bank-accounts"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Bank Account Deletion",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Delete successful\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{URL}}/school-service/api/bank-accounts/{{AccountId}}",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"bank-accounts",
+												"{{AccountId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Bank Account Deletion Negative",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Delete unsuccessful\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": ""
+										},
+										"url": {
+											"raw": "{{URL}}/school-service/api/bank-accounts/{{AccountId}}",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"bank-accounts",
+												"{{AccountId}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Grade Levels",
+							"item": [
+								{
+									"name": "Grade Levels Adding",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var responseData = pm.response.json();\r",
+													"pm.collectionVariables.set(\"GradeId\",responseData.id);\r",
+													"pm.collectionVariables.set(\"GradeName\",responseData.name);\r",
+													"pm.collectionVariables.set(\"GradeShortName\",responseData.shortName);\r",
+													"\r",
+													"pm.test(\"Addition successful\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\": \"{{$randomFullName}}\",\r\n  \"shortName\": \"{{$randomUserName}}\",\r\n  \"nextGradeLevel\": {\r\n    \"id\": \"6544c000e814a84585f1cdf8\"\r\n  },\r\n  \"order\": \"11\",\r\n  \"maxApplicationCount\": 53,\r\n  \"active\": true,\r\n  \"schoolIds\": [\r\n    \"646cbb07acf2ee0d37c6d984\"\r\n  ],\r\n  \"showToAllSchools\": false,\r\n  \"enableForSelectedSchools\": true\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{URL}}/school-service/api/grade-levels",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"grade-levels"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Grade Levels Adding Negative",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Addition unsuccessful\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\": \"{{GradeName}}\",\r\n  \"shortName\": \"{{GradeShortName}}\",\r\n  \"nextGradeLevel\": {\r\n    \"id\": \"6544c000e814a84585f1cdf8\"\r\n  },\r\n  \"order\": \"11\",\r\n  \"maxApplicationCount\": 53,\r\n  \"active\": true,\r\n  \"schoolIds\": [\r\n    \"646cbb07acf2ee0d37c6d984\"\r\n  ],\r\n  \"showToAllSchools\": false,\r\n  \"enableForSelectedSchools\": true\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{URL}}/school-service/api/grade-levels",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"grade-levels"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Grade Levels Update",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Update successful\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"id\": \"{{GradeId}}\",\r\n  \"name\": \"Update Done\",\r\n  \"shortName\": \"Update Done\",\r\n  \"nextGradeLevel\": {\r\n    \"id\": \"6544c000e814a84585f1cdf8\"\r\n  },\r\n  \"order\": \"11\",\r\n  \"maxApplicationCount\": 53,\r\n  \"active\": true,\r\n  \"schoolIds\": [\r\n    \"646cbb07acf2ee0d37c6d984\"\r\n  ],\r\n  \"showToAllSchools\": false,\r\n  \"enableForSelectedSchools\": true\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{URL}}/school-service/api/grade-levels",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"grade-levels"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Grade Levels Deletion",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Delete successful\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{URL}}/school-service/api/grade-levels/{{GradeId}}",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"grade-levels",
+												"{{GradeId}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Grade Levels Deletion Negative",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Delete unsuccessful\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{URL}}/school-service/api/grade-levels/{{GradeId}}",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"grade-levels",
+												"{{GradeId}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "School Setup",
+					"item": [
+						{
+							"name": "Academic Calendar",
+							"item": []
+						},
+						{
+							"name": "Locations",
+							"item": [
+								{
+									"name": "Create Locaiton Copy",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var responseData = pm.response.json();\r",
+													"var LocID = responseData.id;\r",
+													"var LocName = responseData.name;\r",
+													"\r",
+													"pm.collectionVariables.set(\"LocationID\", LocID);\r",
+													"pm.collectionVariables.set(\"LocNAME\", LocName);\r",
+													"\r",
+													"pm.test(\"Status code is 201\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\": \"{{$randomFullName}}\",\r\n  \"shortName\": \"{{$randomColor}}\",\r\n  \"active\": true,\r\n  \"capacity\": 10,\r\n  \"type\": \"CLASS\",\r\n  \"school\": \"646cbb07acf2ee0d37c6d984\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{URL}}/school-service/api/location",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"location"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create Locaiton NEGATIVE",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\": \"{{LocNAME}}\",\r\n  \"shortName\": \"{{$randomColor}}\",\r\n  \"active\": true,\r\n  \"capacity\": 10,\r\n  \"type\": \"CLASS\",\r\n  \"school\": \"646cbb07acf2ee0d37c6d984\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{URL}}/school-service/api/location",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"location"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update Locaiton",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"id\": \"{{LocationID}}\",\r\n  \"name\": \"UPDATE DONE\",\r\n  \"shortName\": \"UPDATE DONE\",\r\n  \"active\": true,\r\n  \"capacity\": 10,\r\n  \"type\": \"CLASS\",\r\n  \"school\": \"646cbb07acf2ee0d37c6d984\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{URL}}/school-service/api/location",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"location"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete Location",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{URL}}/school-service/api/location/{{LocationID}}",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"location",
+												"{{LocationID}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete Location NEGATIVE",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{URL}}/school-service/api/location/{{LocationID}}",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"location",
+												"{{LocationID}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Departments",
+							"item": [
+								{
+									"name": "Create Department",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var responseData = pm.response.json();\r",
+													"var DepID = responseData.id;\r",
+													"var DepName = responseData.name;\r",
+													"\r",
+													"pm.collectionVariables.set(\"DepartmentID\", DepID);\r",
+													"pm.collectionVariables.set(\"DepartmentNAME\", DepName);\r",
+													"\r",
+													"pm.test(\"Status code is 201\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\": \"{{$randomDepartment}}\",\r\n  \"code\": \"{{$randomPhoneNumberExt}}\",\r\n  \"active\": true,\r\n  \"school\": \"646cbb07acf2ee0d37c6d984\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{URL}}/school-service/api/department",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"department"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create Department NEGATIVE",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\": \"{{DepartmentNAME}}\",\r\n  \"code\": \"{{$randomPhoneNumberExt}}\",\r\n  \"active\": true,\r\n  \"school\": \"646cbb07acf2ee0d37c6d984\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{URL}}/school-service/api/department",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"department"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update Department",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"id\": \"{{DepartmentID}}\",\r\n  \"name\": \"UPDATE DONE\",\r\n  \"code\": \"UPDATE DONE\",\r\n  \"active\": true,\r\n  \"school\": \"646cbb07acf2ee0d37c6d984\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{URL}}/school-service/api/department",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"department"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete Department",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 204\", function () {\r",
+													"    pm.response.to.have.status(204);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{URL}}/school-service/api/department/{{DepartmentID}}",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"department",
+												"{{DepartmentID}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete Department NEGATIVE",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{URL}}/school-service/api/department/{{DepartmentID}}",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"department",
+												"{{DepartmentID}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Messaging",
+			"item": [
+				{
+					"name": "Announcements",
+					"item": []
+				},
+				{
+					"name": "Notifications",
+					"item": []
+				}
+			]
+		},
+		{
+			"name": "Entrance Exams",
+			"item": [
+				{
+					"name": "Setup",
+					"item": []
+				},
+				{
+					"name": "Registration Approve",
+					"item": []
+				},
+				{
+					"name": "Registration Complete",
+					"item": []
+				},
+				{
+					"name": "Examination Result",
+					"item": []
+				}
+			]
+		},
+		{
+			"name": "Student",
+			"item": [
+				{
+					"name": "Student Groups",
+					"item": []
+				}
+			]
+		},
+		{
+			"name": "Human Resources",
+			"item": [
+				{
+					"name": "Setup",
+					"item": [
+						{
+							"name": "Positions",
+							"item": [
+								{
+									"name": "Create Position",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var incomingData = pm.response.json();\r",
+													"var id = incomingData.id;\r",
+													"\r",
+													"pm.collectionVariables.set(\"PasitionID\", id);\r",
+													"\r",
+													"pm.test(\"The position creation was successfully completed.\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"id\": null,\r\n  \"name\": \"Computer Teacher\",\r\n  \"shortName\": \"Comp_T\",\r\n  \"translateName\": [],\r\n  \"tenantId\": \"646cb816433c0f46e7d44cb0\",\r\n  \"active\": true\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://test.mersys.io/school-service/api/employee-position",
+											"protocol": "https",
+											"host": [
+												"test",
+												"mersys",
+												"io"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"employee-position"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create Position Negative",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"The faulty registration process was successfully completed\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"id\": {{PasitionID}},\r\n  \"name\": \"Computer Teacher\",\r\n  \"shortName\": \"Comp_T\",\r\n  \"translateName\": [],\r\n  \"tenantId\": \"646cb816433c0f46e7d44cb0\",\r\n  \"active\": true\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://test.mersys.io/school-service/api/employee-position",
+											"protocol": "https",
+											"host": [
+												"test",
+												"mersys",
+												"io"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"employee-position"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update Position",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"The editing process was successfully completed\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"id\": \"{{PasitionID}}\",\r\n  \"name\": \"Mentoring Teacher\",\r\n  \"shortName\": \"Mntr_T\",\r\n  \"translateName\": [],\r\n  \"tenantId\": \"646cb816433c0f46e7d44cb0\",\r\n  \"active\": true\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://test.mersys.io/school-service/api/employee-position",
+											"protocol": "https",
+											"host": [
+												"test",
+												"mersys",
+												"io"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"employee-position"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete Position",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"The deletion process was successfully completed\", function () {\r",
+													"    pm.response.to.have.status(204);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "https://test.mersys.io/school-service/api/employee-position/{{PasitionID}}",
+											"protocol": "https",
+											"host": [
+												"test",
+												"mersys",
+												"io"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"employee-position",
+												"{{PasitionID}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete Position Negative",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Delete unsuccessful\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "https://test.mersys.io/school-service/api/employee-position/{{PasitionID}}",
+											"protocol": "https",
+											"host": [
+												"test",
+												"mersys",
+												"io"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"employee-position",
+												"{{PasitionID}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Work Calendar",
+							"item": []
+						},
+						{
+							"name": "Attestations",
+							"item": [
+								{
+									"name": "Attestations adding",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var responseData = pm.response.json();\r",
+													"pm.collectionVariables.set(\"AttestationID\",responseData.id);\r",
+													"pm.collectionVariables.set(\"AttestationName\",responseData.name);\r",
+													"\r",
+													"pm.test(\"Addition successful\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\": \"{{$randomFileName}}\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{URL}}/school-service/api/attestation",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"attestation"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Attestations adding negative",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Addition unsuccessful\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\": \"{{AttestationName}}\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{URL}}/school-service/api/attestation",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"attestation"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Attestations update",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Update successful\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"id\": \"{{AttestationID}}\",\r\n  \"name\": \"Update Done\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{URL}}/school-service/api/attestation",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"attestation"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Attestations deletion",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Delete unsuccessful\", function () {\r",
+													"    pm.response.to.have.status(204);\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{URL}}/school-service/api/attestation/{{AttestationID}}",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"attestation",
+												"{{AttestationID}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Attestations deletion negative",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Delete unsuccessful\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{URL}}/school-service/api/attestation/{{AttestationID}}",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"attestation",
+												"{{AttestationID}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Positions Categories",
+							"item": [
+								{
+									"name": "Position category adding",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var responseData = pm.response.json();\r",
+													"pm.collectionVariables.set(\"CategoryID\",responseData.id);\r",
+													"pm.collectionVariables.set(\"CategoryName\",responseData.name);\r",
+													"\r",
+													"pm.test(\"Addition successful\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\": \"{{$randomFirstName}}\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{URL}}/school-service/api/position-category",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"position-category"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Position category addition negative",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Addition unsuccessful\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"name\": \"{{CategoryName}}\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{URL}}/school-service/api/position-category",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"position-category"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Position category update",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Update successful\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"id\": \"{{CategoryID}}\",\r\n  \"name\": \"Update Done\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{URL}}/school-service/api/position-category",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"position-category"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Position category deletion",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Delete successful\", function () {\r",
+													"    pm.response.to.have.status(204);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{URL}}/school-service/api/position-category/{{CategoryID}}",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"position-category",
+												"{{CategoryID}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Position category deletion negative",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Delete unsuccessful\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{URL}}/school-service/api/position-category/{{CategoryID}}",
+											"host": [
+												"{{URL}}"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"position-category",
+												"{{CategoryID}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Employees",
+					"item": []
+				},
+				{
+					"name": "Salary",
+					"item": []
+				}
+			]
+		},
+		{
+			"name": "Inventory",
+			"item": [
+				{
+					"name": "Setup",
+					"item": []
+				},
+				{
+					"name": "Item Management",
+					"item": []
+				}
+			]
+		},
+		{
+			"name": "Education",
+			"item": [
+				{
+					"name": "Setup",
+					"item": [
+						{
+							"name": "Subject Categories",
+							"item": [
+								{
+									"name": "Create Subject Category",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"var incomingData = pm.response.json();\r",
+													"var id = incomingData.id;\r",
+													"pm.collectionVariables.set(\"scID\", id);\r",
+													"\r",
+													"\r",
+													"pm.test(\"The position creation was successfully completed.\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"id\": null,\r\n  \"name\": \"Sayisal\",\r\n  \"code\": \"05\",\r\n  \"active\": true,\r\n  \"translateName\": []\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://test.mersys.io/school-service/api/subject-categories",
+											"protocol": "https",
+											"host": [
+												"test",
+												"mersys",
+												"io"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"subject-categories"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create Subject Category Negative",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"The faulty registration process was successfully completed\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"id\": null,\r\n  \"name\": \"Sayisal\",\r\n  \"code\": \"05\",\r\n  \"active\": true,\r\n  \"translateName\": []\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://test.mersys.io/school-service/api/subject-categories",
+											"protocol": "https",
+											"host": [
+												"test",
+												"mersys",
+												"io"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"subject-categories"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update Subject Category",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"The editing process was successfully completed\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n  \"id\": \"{{scID}}\",\r\n  \"name\": \"Sozel\",\r\n  \"code\": \"04\",\r\n  \"active\": true,\r\n  \"translateName\": []\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://test.mersys.io/school-service/api/subject-categories",
+											"protocol": "https",
+											"host": [
+												"test",
+												"mersys",
+												"io"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"subject-categories"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete Subject Category",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"The deletion process was successfully completed\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "https://test.mersys.io/school-service/api/subject-categories/{{scID}}",
+											"protocol": "https",
+											"host": [
+												"test",
+												"mersys",
+												"io"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"subject-categories",
+												"{{scID}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete Subject Category Negative",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"False Delete completed successfully\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "https://test.mersys.io/school-service/api/subject-categories/{{scID}}",
+											"protocol": "https",
+											"host": [
+												"test",
+												"mersys",
+												"io"
+											],
+											"path": [
+												"school-service",
+												"api",
+												"subject-categories",
+												"{{scID}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Attendance",
+					"item": []
+				},
+				{
+					"name": "Grading",
+					"item": []
+				}
+			]
+		},
+		{
+			"name": "Incidents",
+			"item": [
+				{
+					"name": "Setup",
+					"item": []
+				},
+				{
+					"name": "Student Points",
+					"item": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "CategoryID",
+			"value": ""
+		},
+		{
+			"key": "CategoryName",
+			"value": ""
+		},
+		{
+			"key": "AttestationID",
+			"value": ""
+		},
+		{
+			"key": "AttestationName",
+			"value": ""
+		},
+		{
+			"key": "SchoolID",
+			"value": ""
+		},
+		{
+			"key": "DocID",
+			"value": ""
+		},
+		{
+			"key": "DocNAME",
+			"value": ""
+		},
+		{
+			"key": "FieldID",
+			"value": ""
+		},
+		{
+			"key": "FieldName",
+			"value": ""
+		},
+		{
+			"key": "DiscountID",
+			"value": ""
+		},
+		{
+			"key": "DiscountDescription",
+			"value": ""
+		},
+		{
+			"key": "NationalityID",
+			"value": ""
+		},
+		{
+			"key": "NationalityNAME",
+			"value": ""
+		},
+		{
+			"key": "PasitionID",
+			"value": ""
+		},
+		{
+			"key": "scID",
+			"value": ""
+		},
+		{
+			"key": "AccountName",
+			"value": ""
+		},
+		{
+			"key": "AccountIban",
+			"value": ""
+		},
+		{
+			"key": "AccountCode",
+			"value": ""
+		},
+		{
+			"key": "AccountId",
+			"value": ""
+		},
+		{
+			"key": "GradeId",
+			"value": ""
+		},
+		{
+			"key": "GradeName",
+			"value": ""
+		},
+		{
+			"key": "GradeShortName",
+			"value": ""
+		},
+		{
+			"key": "LocationID",
+			"value": ""
+		},
+		{
+			"key": "LocNAME",
+			"value": ""
+		},
+		{
+			"key": "DepartmentID",
+			"value": ""
+		},
+		{
+			"key": "DepartmentNAME",
+			"value": ""
+		}
+	]
+}
