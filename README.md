@@ -4,7 +4,7 @@ This project is created to perform API tests for mersys.io, an educational appli
 - **Frontend Test Project :** [mersys.io_Testing](https://github.com/Pazzoide/mersys.io_Testing.git)<br>
 - **API Test with REST Assured :** [mersys.io_API_REST_Assured](https://github.com/Pazzoide/mersysio_restassured.git)
 
-![Postman](https://github.com/Pazzoide/mersys.io_API_Testing/blob/main/Postman.gif)
+![Postman](Postman.gif)
 
 
 ### TEAM
